@@ -21,6 +21,8 @@
 		CF99338B26544B3B00EE2348 /* WordpressSite-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF99338A26544B3B00EE2348 /* WordpressSite-extension.swift */; };
 		CF9933972654530600EE2348 /* URLImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF9933962654530600EE2348 /* URLImageView.swift */; };
 		CF993399265456A700EE2348 /* WordpressSiteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF993398265456A700EE2348 /* WordpressSiteManager.swift */; };
+		CFF14C3427F396B2001FF3A6 /* WordpressSiteAsyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF14C3327F396B2001FF3A6 /* WordpressSiteAsyncManager.swift */; };
+		CFF14C3627F39CDA001FF3A6 /* WordpressSiteAsyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF14C3527F39CDA001FF3A6 /* WordpressSiteAsyncView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +63,8 @@
 		CF99338A26544B3B00EE2348 /* WordpressSite-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WordpressSite-extension.swift"; sourceTree = "<group>"; };
 		CF9933962654530600EE2348 /* URLImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLImageView.swift; sourceTree = "<group>"; };
 		CF993398265456A700EE2348 /* WordpressSiteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordpressSiteManager.swift; sourceTree = "<group>"; };
+		CFF14C3327F396B2001FF3A6 /* WordpressSiteAsyncManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordpressSiteAsyncManager.swift; sourceTree = "<group>"; };
+		CFF14C3527F39CDA001FF3A6 /* WordpressSiteAsyncView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordpressSiteAsyncView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				CF99337F26544ADB00EE2348 /* WordpressSiteView.swift */,
+				CFF14C3527F39CDA001FF3A6 /* WordpressSiteAsyncView.swift */,
 				CF61BB5326548FBB009936FA /* WordpressItemListView.swift */,
 				CF61BB5126548BDE009936FA /* WordpressItemView.swift */,
 				CF99338026544ADB00EE2348 /* WordpressSettingsView.swift */,
@@ -167,6 +172,7 @@
 			children = (
 				CF99338A26544B3B00EE2348 /* WordpressSite-extension.swift */,
 				CF993398265456A700EE2348 /* WordpressSiteManager.swift */,
+				CFF14C3327F396B2001FF3A6 /* WordpressSiteAsyncManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -306,6 +312,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFF14C3627F39CDA001FF3A6 /* WordpressSiteAsyncView.swift in Sources */,
 				CF99338B26544B3B00EE2348 /* WordpressSite-extension.swift in Sources */,
 				CF993399265456A700EE2348 /* WordpressSiteManager.swift in Sources */,
 				CF99338426544ADB00EE2348 /* WordpressSiteView.swift in Sources */,
@@ -315,6 +322,7 @@
 				CF9933502654463F00EE2348 /* WordpressReaderExampleApp.swift in Sources */,
 				CF99338526544ADB00EE2348 /* WordpressSettingsView.swift in Sources */,
 				CF61BB5426548FBB009936FA /* WordpressItemListView.swift in Sources */,
+				CFF14C3427F396B2001FF3A6 /* WordpressSiteAsyncManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

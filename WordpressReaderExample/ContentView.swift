@@ -9,7 +9,17 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        WordpressSiteView()
+        TabView {
+            WordpressSiteView()
+                .tabItem {
+                    Label("Closure", systemImage: "network")
+                }
+            
+            WordpressSiteAsyncView()
+                .tabItem {
+                    Label("Async", systemImage: "sparkles")
+                }
+        }
     }
 }
 

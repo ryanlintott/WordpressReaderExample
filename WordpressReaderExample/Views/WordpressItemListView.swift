@@ -25,6 +25,7 @@ struct WordpressItemListView<T: WordpressItem>: View {
     var body: some View {
         NavigationView {
             VStack {
+                Text("Total: \(items.count)")
                 List(items, id: \.id) { item in
                     NavigationLink (
                         destination: WordpressItemView(item)

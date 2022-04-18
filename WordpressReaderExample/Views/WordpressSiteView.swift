@@ -20,37 +20,30 @@ struct WordpressSiteView: View {
         TabView(selection: $selection) {
             WordpressItemListView(title: "Posts", items: siteManager.posts)
                 .tabItem {
-                    Image(systemName: "globe")
-                    Text("Posts")
+                    Label("Posts", systemImage: "globe")
                 }
                 .tag(WordpressSiteViewTab.posts)
             
             WordpressItemListView(title: "Pages", items: siteManager.pages)
                 .tabItem {
-                    Image(systemName: "doc.plaintext")
-                    Text("Pages")
+                    Label("Pages", systemImage: "doc.plaintext")
                 }
                 .tag(WordpressSiteViewTab.pages)
             
             WordpressItemListView(title: "Categories", items: siteManager.categories)
                 .tabItem {
-                    Image(systemName: "tag")
-                    Text("Categories")
+                    Label("Categories", systemImage: "tag")
                 }
                 .tag(WordpressSiteViewTab.categories)
             
             WordpressSettingsView(settings: siteManager.settings)
                 .tabItem {
-                    Image(systemName: "gear")
-                    Text("Site")
+                    Label("Site", systemImage: "gear")
                 }
                 .tag(WordpressSiteViewTab.site)
         }
         .onAppear {
-            siteManager.loadSettings()
-            siteManager.loadPosts(perPage: 10, maxNumPages: 1)
-            siteManager.loadPages(perPage: 10, maxNumPages: 1)
-            siteManager.loadCategories()
+            siteManager.loadRecentThenAll()
         }
     }
 }
