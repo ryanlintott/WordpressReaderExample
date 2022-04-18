@@ -17,6 +17,22 @@ struct WordpressSiteAsyncView: View {
     @State private var selection: WordpressSiteAsyncViewTab = .posts
     
     var body: some View {
+        if #available(iOS 15.0, *) {
+            tabView
+                .task {
+                    await siteManager.loadRecentThenAll()
+                }
+        } else {
+            tabView
+                .onAppear {
+                    Task {
+                        await siteManager.loadRecentThenAll()
+                    }
+                }
+        }
+    }
+    
+    var tabView: some View {
         TabView(selection: $selection) {
             WordpressItemListView(title: "Posts", items: siteManager.posts.sorted(by: { $0.date_gmt > $1.date_gmt }))
                 .tabItem {
@@ -41,11 +57,6 @@ struct WordpressSiteAsyncView: View {
                     Label("Site", systemImage: "gear")
                 }
                 .tag(WordpressSiteAsyncViewTab.site)
-        }
-        .onAppear {
-            Task(priority: .high) {
-                await siteManager.loadRecentThenAll()
-            }
         }
     }
 }

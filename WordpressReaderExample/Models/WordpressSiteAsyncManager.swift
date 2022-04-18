@@ -27,19 +27,21 @@ class WordpressSiteAsyncManager: ObservableObject {
     
     func loadRecentThenAll(recentIfAfterDate date: Date = Date().addingTimeInterval(-259200)) async {
         let asyncStart = Date()
+        
         await loadSettings()
         print("Settings: \(Date().timeIntervalSince(asyncStart))")
 
         await loadCategories()
         print("Categories: \(Date().timeIntervalSince(asyncStart))")
 
-        Task(priority: .high) {
-            await loadPosts(queryItems: [.postedAfter(date)])
-            print("RecentPosts: \(Date().timeIntervalSince(asyncStart))")
-        }
+//        Task(priority: .high) {
+//            await loadPosts(queryItems: [.postedAfter(date)])
+//            print("RecentPosts: \(Date().timeIntervalSince(asyncStart))")
+//        }
 
         Task {
-            await loadPosts(queryItems: [.postedBefore(date)])
+//            await loadPosts(queryItems: [.postedBefore(date)])
+            await loadPosts()
             print("RemainingPosts: \(Date().timeIntervalSince(asyncStart))")
         }
         
@@ -57,7 +59,7 @@ class WordpressSiteAsyncManager: ObservableObject {
         
     }
     
-    func loadAll(postQueryItems: [WordpressQueryItem] = [], pageQueryItems: [WordpressQueryItem] = []) async {
+    func loadAll(postQueryItems: Set<WordpressQueryItem> = [], pageQueryItems: Set<WordpressQueryItem> = []) async {
         await loadSettings()
         await loadCategories()
         await loadPosts(queryItems: postQueryItems)
@@ -82,11 +84,11 @@ class WordpressSiteAsyncManager: ObservableObject {
     }
     
     // Loads posts
-    func loadPosts(queryItems: [WordpressQueryItem] = []) async {
-        let request = WordpressRequest(queryItems: queryItems)
+    func loadPosts(queryItems: Set<WordpressQueryItem> = []) async {
+        let request = WordpressPost.request(queryItems: queryItems)
         do {
-            for try await posts in try await site.postStream(request) {
-                self.posts = self.posts.union(posts)
+            for try await post in try await site.postStream(request) {
+                self.posts.insert(post)
             }
         } catch let error {
             processError(error)
@@ -94,8 +96,8 @@ class WordpressSiteAsyncManager: ObservableObject {
     }
     
     // Loads up to 100 pages without batching
-    func loadPages(queryItems: [WordpressQueryItem] = []) async {
-        let request = WordpressRequest(queryItems: queryItems)
+    func loadPages(queryItems: Set<WordpressQueryItem> = []) async {
+        let request = WordpressPage.request(queryItems: queryItems)
         let pages = await fetchItems(WordpressPage.self, request: request)
         self.pages = self.pages.union(pages)
     }
@@ -105,7 +107,7 @@ class WordpressSiteAsyncManager: ObservableObject {
         categories = await fetchItems(WordpressCategory.self)
     }
     
-    internal func fetchItems<T: WordpressItem>(_ type: T.Type, request: WordpressRequest = .init()) async -> [T] {
+    internal func fetchItems<T: WordpressItem>(_ type: T.Type, request: WordpressRequest<T>? = nil) async -> [T] {
         do {
             return try await site.items(type, request: request)
         } catch let error {
