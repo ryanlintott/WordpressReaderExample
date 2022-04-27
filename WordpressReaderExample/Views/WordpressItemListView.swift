@@ -11,6 +11,7 @@ import WordpressReader
 struct WordpressItemListView<T: WordpressItem>: View {
     let title: String
     let items: [T]
+    let loading: Bool
     
     func itemTitle(_ item: T) -> String {
         if let item = item as? WordpressPost {
@@ -25,7 +26,12 @@ struct WordpressItemListView<T: WordpressItem>: View {
     var body: some View {
         NavigationView {
             VStack {
-                Text("Total: \(items.count)")
+                HStack {
+                    if loading {
+                        ProgressView()
+                    }
+                    Text("Total: \(items.count)")
+                }
                 List(items, id: \.id) { item in
                     NavigationLink (
                         destination: WordpressItemView(item)
@@ -44,10 +50,10 @@ struct WordpressItemListView<T: WordpressItem>: View {
 
 struct WordpressItemListView_Previews: PreviewProvider {
     static var previews: some View {
-        WordpressItemListView(title: "Posts", items: [WordpressPost.example])
+        WordpressItemListView(title: "Posts", items: [WordpressPost.example], loading: false)
         
-        WordpressItemListView(title: "Pages", items: [WordpressPage.example])
+        WordpressItemListView(title: "Pages", items: [WordpressPage.example], loading: true)
         
-        WordpressItemListView(title: "Categories", items: [WordpressCategory.example])
+        WordpressItemListView(title: "Categories", items: [WordpressCategory.example], loading: false)
     }
 }

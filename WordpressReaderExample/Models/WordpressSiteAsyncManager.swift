@@ -6,8 +6,6 @@
 //
 
 import Foundation
-
-import Foundation
 import WordpressReader
 
 @MainActor
@@ -19,51 +17,62 @@ class WordpressSiteAsyncManager: ObservableObject {
     @Published var pages: Set<WordpressPage> = []
     @Published var categories: [WordpressCategory] = []
     @Published var settings: WordpressSettings? = nil
-    @Published var loading = false
+    @Published var error: String? = nil
     
     init(site: WordpressSite) {
         self.site = site
     }
     
-    func loadRecentThenAll(recentIfAfterDate date: Date = Date().addingTimeInterval(-259200)) async {
+    func loadRecentThenAll(recentIfAfterDate date: Date = Date().addingTimeInterval(-7 * 24 * 60 * 60)) async {
         let asyncStart = Date()
         
-        await loadSettings()
-        print("Settings: \(Date().timeIntervalSince(asyncStart))")
+        let task1 = Task {
+            await loadSettings()
+            print("Settings: \(Date().timeIntervalSince(asyncStart))")
+        }
+        
+        let task2 = Task {
+            await loadCategories()
+            print("Categories: \(Date().timeIntervalSince(asyncStart))")
+        }
 
-        await loadCategories()
-        print("Categories: \(Date().timeIntervalSince(asyncStart))")
-
-//        Task(priority: .high) {
-//            await loadPosts(queryItems: [.postedAfter(date)])
-//            print("RecentPosts: \(Date().timeIntervalSince(asyncStart))")
-//        }
-
-        Task {
-//            await loadPosts(queryItems: [.postedBefore(date)])
-            await loadPosts()
+        let task3 = Task {
+            await loadPosts(queryItems: [.postedAfter(date)])
+            print("RecentPosts: \(Date().timeIntervalSince(asyncStart))")
+        }
+        
+        let task4 = Task {
+            await loadPosts(queryItems: [.postedBefore(date)])
             print("RemainingPosts: \(Date().timeIntervalSince(asyncStart))")
         }
         
-        Task {
+        let task5 = Task {
             await loadPages()
             print("Pages: \(Date().timeIntervalSince(asyncStart))")
         }
         
-        //Settings: 0.22335398197174072
-        //Categories: 0.9343689680099487
-        //RecentPosts: 1.6450740098953247
-        //RecentPages: 1.8282029628753662
-        //RemainingPosts: 12.928786993026733
-        //RemainingPages: 14.660529971122742
-        
+        print("Waiting")
+        let (_, _, _, _, _) = await (task1.value, task2.value, task3.value, task4.value, task5.value)
+        print("All done")
     }
     
-    func loadAll(postQueryItems: Set<WordpressQueryItem> = [], pageQueryItems: Set<WordpressQueryItem> = []) async {
-        await loadSettings()
-        await loadCategories()
-        await loadPosts(queryItems: postQueryItems)
-        await loadPages(queryItems: pageQueryItems)
+    func loadAll() async {
+        let task0 = Task {
+            await loadSettings()
+        }
+        let task1 = Task {
+            await loadCategories()
+        }
+        let task2 = Task {
+            await loadPosts()
+        }
+        let task3 = Task {
+            await loadPages()
+        }
+        
+        print("Waiting")
+        let (_, _, _, _) = await (task0.value, task1.value, task2.value, task3.value)
+        print("All done")
     }
     
     func loadSettings() async {
@@ -83,12 +92,17 @@ class WordpressSiteAsyncManager: ObservableObject {
         }
     }
     
-    // Loads posts
-    func loadPosts(queryItems: Set<WordpressQueryItem> = []) async {
-        let request = WordpressPost.request(queryItems: queryItems)
+    /// Loads posts using an async stream
+    /// - Parameter queryItems: Set of query items
+    /// - Parameter maxPages: Max pages of posts to load
+    func loadPosts(queryItems: Set<WordpressQueryItem> = [], maxPages: Int? = nil) async {
+        var request = WordpressPost.request(queryItems: queryItems)
+        if let maxPages = maxPages {
+            request.maxPages = maxPages
+        }
         do {
             for try await post in try await site.postStream(request) {
-                self.posts.insert(post)
+                self.posts.update(with: post)
             }
         } catch let error {
             processError(error)
@@ -97,39 +111,42 @@ class WordpressSiteAsyncManager: ObservableObject {
     
     // Loads up to 100 pages without batching
     func loadPages(queryItems: Set<WordpressQueryItem> = []) async {
-        let request = WordpressPage.request(queryItems: queryItems)
-        let pages = await fetchItems(WordpressPage.self, request: request)
-        self.pages = self.pages.union(pages)
+        do {
+            let pages = try await site.fetchPages(.init(queryItems: queryItems))
+            self.pages = Set(pages)
+        } catch let error {
+            processError(error)
+        }
+        
     }
     
     // Loads all categories using batching
     func loadCategories() async {
-        categories = await fetchItems(WordpressCategory.self)
-    }
-    
-    internal func fetchItems<T: WordpressItem>(_ type: T.Type, request: WordpressRequest<T>? = nil) async -> [T] {
         do {
-            return try await site.items(type, request: request)
+            categories = try await site.fetchCategories()
         } catch let error {
             processError(error)
-            return []
         }
     }
     
     func processError(_ error: Error) {
+        self.error = errorString(error)
+    }
+    
+    func errorString(_ error: Error) -> String {
         switch error {
         case NetworkError.badURL:
-            print("Bad URL")
+            return "Bad URL"
         case NetworkError.requestFailed:
-            print("Network problems: \(error.localizedDescription)")
+            return "Network problems: \(error.localizedDescription)"
         case NetworkError.unknown(let description):
-            print("Unknown network error: \(description)")
+            return "Unknown network error: \(description)"
         case is DecodingError:
-            print("Decoding error: \(error.localizedDescription)")
+            return "Decoding error: \(error.localizedDescription)"
         case is WordpressError:
-            print("Wordpress error: \(error.localizedDescription)")
+            return "Wordpress error: \(error.localizedDescription)"
         default:
-            print("Unknown error: \(error.localizedDescription)")
+            return "Unknown error: \(error.localizedDescription)"
         }
     }
 }

@@ -12,17 +12,17 @@ class WordpressSiteManager: ObservableObject {
     let site: WordpressSite
     
     @Published var singlePost: WordpressPost? = nil
-    @Published var posts = [WordpressPost]()
-    @Published var pages = [WordpressPage]()
+    @Published var posts: Set<WordpressPost> = []
+    @Published var pages: Set<WordpressPage> = []
     @Published var categories = [WordpressCategory]()
     @Published var settings: WordpressSettings? = nil
-    @Published var loading = false
+    @Published var error: String? = nil
     
     init(site: WordpressSite) {
         self.site = site
     }
     
-    func loadRecentThenAll(recentIfAfterDate date: Date = Date().addingTimeInterval(-259200), completion: (() -> Void)? = nil) {
+    func loadRecentThenAll(recentIfAfterDate date: Date = Date().addingTimeInterval(-7 * 24 * 60 * 60), completion: (() -> Void)? = nil) {
         let asyncStart = Date()
         loadSettings {
             let asyncSettings = Date().timeIntervalSince(asyncStart)
@@ -39,11 +39,6 @@ class WordpressSiteManager: ObservableObject {
                             Posts: \(asyncPosts)
                             Pages: \(asyncPages)
                         """)
-                        
-                        //Settings: 0.2008359432220459
-                        //Categories: 0.6105250120162964
-                        //Posts: 1.9895210266113281
-                        //Pages: 2.7375659942626953
                     }
                 }
             }
@@ -95,44 +90,34 @@ class WordpressSiteManager: ObservableObject {
     
     // Loads posts with batching
     func loadPosts(perPage: Int? = nil, maxNumPages: Int? = nil, completion: (() -> Void)? = nil) {
-        var allPosts: [WordpressPost] = []
-        
         site.fetchContent(WordpressPost.self, perPage: perPage, maxNumPages: maxNumPages) { result in
-//            DispatchQueue.main.async {
+            DispatchQueue.main.async {
                 switch result {
                 case .success(let posts):
-                    allPosts += posts
+                    posts.forEach { self.posts.update(with: $0) }
                 case .failure(let error):
                     print("Error loadPosts")
                     self.processError(error)
                 }
-//            }
-        } completion: {
-            DispatchQueue.main.async {
-                self.posts = allPosts
             }
+        } completion: {
             completion?()
         }
     }
     
     // Loads pages with batching
     func loadPages(perPage: Int? = nil, maxNumPages: Int? = nil, completion: (() -> Void)? = nil) {
-        var allPages: [WordpressPage] = []
-        
         site.fetchContent(WordpressPage.self, perPage: perPage, maxNumPages: maxNumPages) { result in
-//            DispatchQueue.main.async {
+            DispatchQueue.main.async {
                 switch result {
                 case .success(let pages):
-                    allPages += pages
+                    pages.forEach { self.pages.update(with: $0) }
                 case .failure(let error):
                     print("Error loadPosts")
                     self.processError(error)
                 }
-//            }
-        } completion: {
-            DispatchQueue.main.async {
-                self.pages = allPages
             }
+        } completion: {
             completion?()
         }
     }
@@ -154,17 +139,23 @@ class WordpressSiteManager: ObservableObject {
     }
     
     func processError(_ error: Error) {
+        self.error = errorString(error)
+    }
+    
+    func errorString(_ error: Error) -> String {
         switch error {
         case NetworkError.badURL:
-            print("Bad URL")
+            return "Bad URL"
         case NetworkError.requestFailed:
-            print("Network problems: \(error.localizedDescription)")
+            return "Network problems: \(error.localizedDescription)"
         case NetworkError.unknown(let description):
-            print("Unknown network error: \(description)")
+            return "Unknown network error: \(description)"
         case is DecodingError:
-            print("Decoding error: \(error.localizedDescription)")
+            return "Decoding error: \(error.localizedDescription)"
+        case is WordpressError:
+            return "Wordpress error: \(error.localizedDescription)"
         default:
-            print("Unknown error: \(error.localizedDescription)")
+            return "Unknown error: \(error.localizedDescription)"
         }
     }
 }

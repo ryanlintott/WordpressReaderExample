@@ -15,18 +15,19 @@ enum WordpressSiteAsyncViewTab: String {
 struct WordpressSiteAsyncView: View {
     @StateObject var siteManager = WordpressSiteAsyncManager(site: .wordhord)
     @State private var selection: WordpressSiteAsyncViewTab = .posts
+    @State private var loading: Bool = false
     
     var body: some View {
         if #available(iOS 15.0, *) {
             tabView
                 .task {
-                    await siteManager.loadRecentThenAll()
+                    await loadContent()
                 }
         } else {
             tabView
                 .onAppear {
                     Task {
-                        await siteManager.loadRecentThenAll()
+                        await loadContent()
                     }
                 }
         }
@@ -34,19 +35,19 @@ struct WordpressSiteAsyncView: View {
     
     var tabView: some View {
         TabView(selection: $selection) {
-            WordpressItemListView(title: "Posts", items: siteManager.posts.sorted(by: { $0.date_gmt > $1.date_gmt }))
+            WordpressItemListView(title: "Posts", items: siteManager.posts.sorted(by: { $0.date_gmt > $1.date_gmt }), loading: loading)
                 .tabItem {
                     Label("Posts", systemImage: "globe")
                 }
                 .tag(WordpressSiteAsyncViewTab.posts)
             
-            WordpressItemListView(title: "Pages", items: siteManager.pages.sorted(by: { $0.date_gmt > $1.date_gmt }))
+            WordpressItemListView(title: "Pages", items: siteManager.pages.sorted(by: { $0.date_gmt > $1.date_gmt }), loading: loading)
                 .tabItem {
                     Label("Pages", systemImage: "doc.plaintext")
                 }
                 .tag(WordpressSiteAsyncViewTab.pages)
             
-            WordpressItemListView(title: "Categories", items: siteManager.categories)
+            WordpressItemListView(title: "Categories", items: siteManager.categories, loading: loading)
                 .tabItem {
                     Label("Categories", systemImage: "tag")
                 }
@@ -58,6 +59,12 @@ struct WordpressSiteAsyncView: View {
                 }
                 .tag(WordpressSiteAsyncViewTab.site)
         }
+    }
+    
+    func loadContent() async {
+        loading = true
+        await siteManager.loadRecentThenAll()
+        loading = false
     }
 }
 
