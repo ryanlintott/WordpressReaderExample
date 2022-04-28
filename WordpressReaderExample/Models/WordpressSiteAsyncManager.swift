@@ -26,52 +26,42 @@ class WordpressSiteAsyncManager: ObservableObject {
     func loadRecentThenAll(recentIfAfterDate date: Date = Date().addingTimeInterval(-7 * 24 * 60 * 60)) async {
         let asyncStart = Date()
         
-        let task1 = Task {
-            await loadSettings()
-            print("Settings: \(Date().timeIntervalSince(asyncStart))")
+        await withTaskGroup(of: Void.self) { group in
+            group.addTask {
+                await self.loadSettings()
+                print("Settings: \(Date().timeIntervalSince(asyncStart))")
+            }
+            
+            group.addTask {
+                await self.loadCategories()
+                print("Categories: \(Date().timeIntervalSince(asyncStart))")
+            }
+            
+            group.addTask {
+                await self.loadPosts(queryItems: [.postedAfter(date)])
+                print("RecentPosts: \(Date().timeIntervalSince(asyncStart))")
+            }
+            
+            group.addTask {
+                await self.loadPosts(queryItems: [.postedBefore(date)])
+                print("RemainingPosts: \(Date().timeIntervalSince(asyncStart))")
+            }
+            
+            group.addTask {
+                await self.loadPages()
+                print("Pages: \(Date().timeIntervalSince(asyncStart))")
+            }
         }
-        
-        let task2 = Task {
-            await loadCategories()
-            print("Categories: \(Date().timeIntervalSince(asyncStart))")
-        }
-
-        let task3 = Task {
-            await loadPosts(queryItems: [.postedAfter(date)])
-            print("RecentPosts: \(Date().timeIntervalSince(asyncStart))")
-        }
-        
-        let task4 = Task {
-            await loadPosts(queryItems: [.postedBefore(date)])
-            print("RemainingPosts: \(Date().timeIntervalSince(asyncStart))")
-        }
-        
-        let task5 = Task {
-            await loadPages()
-            print("Pages: \(Date().timeIntervalSince(asyncStart))")
-        }
-        
-        print("Waiting")
-        let (_, _, _, _, _) = await (task1.value, task2.value, task3.value, task4.value, task5.value)
         print("All done")
     }
     
     func loadAll() async {
-        let task0 = Task {
-            await loadSettings()
+        await withTaskGroup(of: Void.self) { group in
+            group.addTask { await self.loadSettings() }
+            group.addTask { await self.loadCategories() }
+            group.addTask { await self.loadPosts() }
+            group.addTask { await self.loadPages() }
         }
-        let task1 = Task {
-            await loadCategories()
-        }
-        let task2 = Task {
-            await loadPosts()
-        }
-        let task3 = Task {
-            await loadPages()
-        }
-        
-        print("Waiting")
-        let (_, _, _, _) = await (task0.value, task1.value, task2.value, task3.value)
         print("All done")
     }
     
