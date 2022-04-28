@@ -91,8 +91,8 @@ class WordpressSiteAsyncManager: ObservableObject {
             request.maxPages = maxPages
         }
         do {
-            for try await post in try await site.postStream(request) {
-                self.posts.update(with: post)
+            for try await batch in try await site.postStream(request) {
+                batch.forEach { self.posts.update(with: $0) }
             }
         } catch let error {
             processError(error)
