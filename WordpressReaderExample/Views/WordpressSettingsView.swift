@@ -1,6 +1,6 @@
 //
 //  WordpressSettingsView.swift
-//  Wordhord
+//  WordpressReaderExample
 //
 //  Created by Ryan Lintott on 2020-07-23.
 //
@@ -15,8 +15,9 @@ struct WordpressSettingsView: View {
         if let settings = settings {
             NavigationView {
                 Form {
-                    URLImageView(url: settings.logo.url)
-                        .padding()
+                    Section(header: Text("Name")) {
+                        Text(settings.name)
+                    }
                     
                     Section(header: Text("Description")) {
                         Text(settings.description)
@@ -25,8 +26,21 @@ struct WordpressSettingsView: View {
                     Section(header: Text("URL")) {
                         Text(settings.URL)
                     }
+                    
+                    Section(header: Text("Logo")) {
+                        Text(settings.logo.url)
+                        URLImageView(url: settings.logo.url)
+                            .padding()
+                    }
+                    
+                    Section(header: Text("Icon")) {
+                        Text(settings.icon.img)
+                        URLImageView(url: settings.icon.img)
+                            .frame(width: 96)
+                            .padding()
+                    }
                 }
-                .navigationBarTitle(settings.name)
+                .navigationBarTitle("Settings")
             }
         }
     }

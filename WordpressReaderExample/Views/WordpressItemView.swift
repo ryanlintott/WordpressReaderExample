@@ -35,9 +35,21 @@ struct WordpressItemView<T: WordpressItem>: View {
                 Text(item.link)
             }
             
+            Section(header: Text("Slug")) {
+                Text(item.slugCleaned)
+            }
+            
             if let content = item as? WordpressContent {
-                Section(header: Text("Slug")) {
-                    Text(content.slugCleaned)
+                Section(header: Text("Date Posted")) {
+                    Text(content.date_gmt, style: .date)
+                }
+                
+                Section(header: Text("Date Modified")) {
+                    Text(content.modified_gmt, style: .date)
+                }
+                
+                Section(header: Text("Excerpt")) {
+                    Text(content.excerptCleaned)
                 }
                 
                 Section(header: Text("Content")) {

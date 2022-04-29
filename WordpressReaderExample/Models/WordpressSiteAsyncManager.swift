@@ -86,12 +86,12 @@ class WordpressSiteAsyncManager: ObservableObject {
     /// - Parameter queryItems: Set of query items
     /// - Parameter maxPages: Max pages of posts to load
     func loadPosts(queryItems: Set<WordpressQueryItem> = [], maxPages: Int? = nil) async {
-        var request = WordpressPost.request(queryItems: queryItems)
+        var request = WordpressRequest.posts(queryItems)
         if let maxPages = maxPages {
             request.maxPages = maxPages
         }
         do {
-            for try await batch in try await site.postStream(request) {
+            for try await batch in try await site.stream(request) {
                 batch.forEach { self.posts.update(with: $0) }
             }
         } catch let error {
@@ -102,7 +102,7 @@ class WordpressSiteAsyncManager: ObservableObject {
     // Loads up to 100 pages without batching
     func loadPages(queryItems: Set<WordpressQueryItem> = []) async {
         do {
-            let pages = try await site.fetchPages(.init(queryItems: queryItems))
+            let pages = try await site.fetch(.pages(queryItems))
             self.pages = Set(pages)
         } catch let error {
             processError(error)
@@ -113,7 +113,7 @@ class WordpressSiteAsyncManager: ObservableObject {
     // Loads all categories using batching
     func loadCategories() async {
         do {
-            categories = try await site.fetchCategories()
+            categories = try await site.fetch(.categories())
         } catch let error {
             processError(error)
         }
