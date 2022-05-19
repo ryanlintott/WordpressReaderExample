@@ -144,16 +144,16 @@ class WordpressSiteManager: ObservableObject {
     
     func errorString(_ error: Error) -> String {
         switch error {
-        case NetworkError.badURL:
+        case WordpressReaderError.URLError.badURL:
             return "Bad URL"
-        case NetworkError.requestFailed:
+        case WordpressReaderError.Network.requestFailed:
             return "Network problems: \(error.localizedDescription)"
-        case NetworkError.unknown(let description):
+        case WordpressReaderError.Network.unknown(let description):
             return "Unknown network error: \(description)"
         case is DecodingError:
             return "Decoding error: \(error.localizedDescription)"
-        case is WordpressError:
-            return "Wordpress error: \(error.localizedDescription)"
+        case is WordpressReaderError:
+            return "WordpressReader error: \(error.localizedDescription)"
         default:
             return "Unknown error: \(error.localizedDescription)"
         }
