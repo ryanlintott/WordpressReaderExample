@@ -71,7 +71,7 @@ struct WordpressItemView<T: WordpressItem>: View {
                 }
             }
         }
-        .navigationBarTitle(title)
+        .navigationTitle(title)
     }
 }
 

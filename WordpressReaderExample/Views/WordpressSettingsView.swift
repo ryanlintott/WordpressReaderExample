@@ -42,6 +42,7 @@ struct WordpressSettingsView: View {
                 }
                 .navigationBarTitle("Settings")
             }
+            .navigationViewStyle(.stack)
         }
     }
 }
