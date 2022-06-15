@@ -121,6 +121,7 @@ class WordpressSiteAsyncManager: ObservableObject {
     
     func processError(_ error: Error) {
         self.error = errorString(error)
+        print(error)
     }
     
     func errorString(_ error: Error) -> String {
