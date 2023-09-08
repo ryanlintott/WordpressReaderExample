@@ -34,7 +34,7 @@ struct URLImageView: View {
                 return
             }
             
-            #if os(iOS)
+            #if os(iOS) || os(visionOS)
             if let uiImage = UIImage(data: data) {
                 DispatchQueue.main.async {
                     image = Image(uiImage: uiImage)
