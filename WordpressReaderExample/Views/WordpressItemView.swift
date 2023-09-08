@@ -39,7 +39,7 @@ struct WordpressItemView<T: WordpressItem>: View {
                 Text(item.slugCleaned)
             }
             
-            if let content = item as? WordpressContent {
+            if let content = item as? (any WordpressContent) {
                 Section(header: Text("Date Posted")) {
                     Text(content.date_gmt, style: .date)
                 }
