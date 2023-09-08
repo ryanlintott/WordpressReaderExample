@@ -18,7 +18,7 @@ struct WordpressSiteAsyncView: View {
     @State private var loading: Bool = false
     
     var body: some View {
-        if #available(iOS 15.0, *) {
+        if #available(iOS 15.0, macOS 12.0, *) {
             tabView
                 .task {
                     await loadContent()

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 struct URLImageView: View {
     let url: String
     
@@ -33,11 +34,21 @@ struct URLImageView: View {
                 return
             }
             
+            #if os(iOS)
             if let uiImage = UIImage(data: data) {
                 DispatchQueue.main.async {
                     image = Image(uiImage: uiImage)
                 }
             }
+            #else
+            if let nsImage = NSImage(data: data) {
+                DispatchQueue.main.async {
+                    image = Image(nsImage: nsImage)
+                }
+            }
+            #endif
+            
+            
         }.resume()
     }
 }

@@ -40,9 +40,8 @@ struct WordpressSettingsView: View {
                             .padding()
                     }
                 }
-                .navigationBarTitle("Settings")
+                .navigationTitle("Settings")
             }
-            .navigationViewStyle(.stack)
         }
     }
 }

@@ -44,7 +44,6 @@ struct WordpressItemListView<T: WordpressItem>: View {
             }
             .navigationTitle(title)
         }
-        .navigationViewStyle(.stack)
     }
 }
 
