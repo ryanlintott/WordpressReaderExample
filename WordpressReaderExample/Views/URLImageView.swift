@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-
+@MainActor
 struct URLImageView: View {
     let url: String
     
@@ -19,37 +19,34 @@ struct URLImageView: View {
                 .resizable()
                 .scaledToFit()
         }
-        .onAppear(perform: loadImage)
+        .onAppear {
+            Task {
+                await loadImage()
+            }
+        }
     }
     
-    func loadImage() {
+    func loadImage() async {
         guard let url = URL(string: url) else {
             print("URLImageView: Bad url")
             return
         }
         
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let data = data else {
-                print("URLSession Error: \(error?.localizedDescription ?? "Unknown error")")
-                return
-            }
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
             
             #if os(iOS) || os(visionOS)
             if let uiImage = UIImage(data: data) {
-                DispatchQueue.main.async {
-                    image = Image(uiImage: uiImage)
-                }
+                image = Image(uiImage: uiImage)
             }
             #else
             if let nsImage = NSImage(data: data) {
-                DispatchQueue.main.async {
-                    image = Image(nsImage: nsImage)
-                }
+                image = Image(nsImage: nsImage)
             }
             #endif
-            
-            
-        }.resume()
+        } catch {
+            print(error)
+        }
     }
 }
 
