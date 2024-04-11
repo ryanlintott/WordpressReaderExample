@@ -8,6 +8,7 @@
 import Foundation
 import WordpressReader
 
+@MainActor
 class WordpressSiteManager: ObservableObject {
     let site: WordpressSite
     
@@ -22,42 +23,57 @@ class WordpressSiteManager: ObservableObject {
         self.site = site
     }
     
-    func loadRecentThenAll(recentIfAfterDate date: Date = Date().addingTimeInterval(-7 * 24 * 60 * 60), completion: (() -> Void)? = nil) {
+    func loadRecentThenAll(recentIfAfterDate date: Date = Date().addingTimeInterval(-7 * 24 * 60 * 60), completion: (@Sendable () -> Void)? = nil) {
         let asyncStart = Date()
+        
         loadSettings {
-            let asyncSettings = Date().timeIntervalSince(asyncStart)
-            self.loadCategories {
-                let asyncCategories = Date().timeIntervalSince(asyncStart)
-                self.loadPosts() {
-                    let asyncPosts = Date().timeIntervalSince(asyncStart)
-                    self.loadPages() {
-                        let asyncPages = Date().timeIntervalSince(asyncStart)
-                        completion?()
-                        print("""
-                            Settings: \(asyncSettings)
-                            Categories: \(asyncCategories)
-                            Posts: \(asyncPosts)
-                            Pages: \(asyncPages)
-                        """)
+            DispatchQueue.main.async {
+                let asyncSettings = Date().timeIntervalSince(asyncStart)
+                self.loadCategories {
+                    let asyncCategories = Date().timeIntervalSince(asyncStart)
+                    
+                    DispatchQueue.main.async {
+                        self.loadPosts() {
+                            let asyncPosts = Date().timeIntervalSince(asyncStart)
+                            
+                            DispatchQueue.main.async {
+                                self.loadPages() {
+                                    let asyncPages = Date().timeIntervalSince(asyncStart)
+                                    completion?()
+                                    print("""
+                                        Settings: \(asyncSettings)
+                                        Categories: \(asyncCategories)
+                                        Posts: \(asyncPosts)
+                                        Pages: \(asyncPages)
+                                    """)
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
     }
     
-    func loadAll(perPage: Int? = nil, maxNumPages: Int? = nil, completion: (() -> Void)? = nil) {
+    func loadAll(perPage: Int? = nil, maxNumPages: Int? = nil, completion: (@Sendable () -> Void)? = nil) {
         loadSettings {
-            self.loadCategories {
-                self.loadPosts(perPage: perPage, maxNumPages: maxNumPages) {
-                    self.loadPages(perPage: perPage, maxNumPages: maxNumPages) {
-                        completion?()
+            DispatchQueue.main.async {
+                self.loadCategories {
+                    DispatchQueue.main.async {
+                        self.loadPosts(perPage: perPage, maxNumPages: maxNumPages) {
+                            DispatchQueue.main.async {
+                                self.loadPages(perPage: perPage, maxNumPages: maxNumPages) {
+                                    completion?()
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
     }
     
-    func loadSettings(completion: (() -> Void)? = nil) {
+    func loadSettings(completion: (@Sendable () -> Void)? = nil) {
         site.fetchSettings { result in
             DispatchQueue.main.async {
                 switch result {
@@ -73,7 +89,7 @@ class WordpressSiteManager: ObservableObject {
     }
     
     // Loads a single post by id
-    func loadPost(id: Int, completion: (() -> Void)? = nil) {
+    func loadPost(id: Int, completion: (@Sendable () -> Void)? = nil) {
         site.fetchById(WordpressPost.self, id: id) { result in
             DispatchQueue.main.async {
                 switch result {
@@ -89,7 +105,7 @@ class WordpressSiteManager: ObservableObject {
     }
     
     // Loads posts with batching
-    func loadPosts(perPage: Int? = nil, maxNumPages: Int? = nil, completion: (() -> Void)? = nil) {
+    func loadPosts(perPage: Int? = nil, maxNumPages: Int? = nil, completion: (@Sendable () -> Void)? = nil) {
         site.fetchContent(WordpressPost.self, perPage: perPage, maxNumPages: maxNumPages) { result in
             DispatchQueue.main.async {
                 switch result {
@@ -106,7 +122,7 @@ class WordpressSiteManager: ObservableObject {
     }
     
     // Loads pages with batching
-    func loadPages(perPage: Int? = nil, maxNumPages: Int? = nil, completion: (() -> Void)? = nil) {
+    func loadPages(perPage: Int? = nil, maxNumPages: Int? = nil, completion: (@Sendable () -> Void)? = nil) {
         site.fetchContent(WordpressPage.self, perPage: perPage, maxNumPages: maxNumPages) { result in
             DispatchQueue.main.async {
                 switch result {
@@ -123,7 +139,7 @@ class WordpressSiteManager: ObservableObject {
     }
     
     // Loads all categories using batching
-    func loadCategories(completion: (() -> Void)? = nil) {
+    func loadCategories(completion: (@Sendable () -> Void)? = nil) {
         site.fetchAllItems(WordpressCategory.self) { result in
             DispatchQueue.main.async {
                 switch result {

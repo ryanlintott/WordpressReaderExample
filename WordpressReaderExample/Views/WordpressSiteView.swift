@@ -44,11 +44,14 @@ struct WordpressSiteView: View {
                 .tag(WordpressSiteViewTab.site)
         }
         .onAppear {
-            loading = true
-            siteManager.loadRecentThenAll {
-                DispatchQueue.main.async {
-                    loading = false
+            Task { @MainActor in
+                loading = true
+                await withCheckedContinuation { continuation in
+                    siteManager.loadRecentThenAll {
+                        continuation.resume()
+                    }
                 }
+                loading = false
             }
         }
     }
