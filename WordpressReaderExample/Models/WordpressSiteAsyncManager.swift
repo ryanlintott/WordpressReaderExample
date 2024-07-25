@@ -23,7 +23,7 @@ class WordpressSiteAsyncManager: ObservableObject {
         self.site = site
     }
     
-    func loadRecentThenAll(recentIfAfterDate date: Date = Date().addingTimeInterval(-7 * 24 * 60 * 60)) async {
+    func loadRecentThenAll(recentIfAfterDate date: Date = Date().addingTimeInterval(-20 * 24 * 60 * 60)) async {
         let asyncStart = Date()
         
         await withTaskGroup(of: Void.self) { group in
@@ -43,7 +43,7 @@ class WordpressSiteAsyncManager: ObservableObject {
             }
             
             group.addTask {
-                await self.loadPosts(queryItems: [.postedBefore(date)])
+                await self.loadPosts(queryItems: [.postedBefore(date), .perPage(100)])
                 print("RemainingPosts: \(Date().timeIntervalSince(asyncStart))")
             }
             
@@ -59,7 +59,7 @@ class WordpressSiteAsyncManager: ObservableObject {
         await withTaskGroup(of: Void.self) { group in
             group.addTask { await self.loadSettings() }
             group.addTask { await self.loadCategories() }
-            group.addTask { await self.loadPosts() }
+            group.addTask { await self.loadPosts(queryItems: [.perPage(100)]) }
             group.addTask { await self.loadPages() }
         }
         print("All done")
@@ -86,13 +86,13 @@ class WordpressSiteAsyncManager: ObservableObject {
     /// - Parameter queryItems: Set of query items
     /// - Parameter maxPages: Max pages of posts to load
     func loadPosts(queryItems: Set<WordpressQueryItem> = [], maxPages: Int? = nil) async {
-        var request = WordpressRequest.posts(queryItems)
+        var request = WordpressPost.request(queryItems)
         if let maxPages = maxPages {
             request.maxPages = maxPages
         }
         do {
             for try await batch in try await site.stream(request) {
-                batch.forEach { self.posts.update(with: $0) }
+                posts = posts.union(batch)
             }
         } catch let error {
             processError(error)

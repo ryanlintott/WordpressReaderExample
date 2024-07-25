@@ -23,7 +23,7 @@ class WordpressSiteManager: ObservableObject {
         self.site = site
     }
     
-    func loadRecentThenAll(recentIfAfterDate date: Date = Date().addingTimeInterval(-7 * 24 * 60 * 60), completion: (@Sendable () -> Void)? = nil) {
+    func loadRecentThenAll(recentIfAfterDate date: Date = Date().addingTimeInterval(-20 * 24 * 60 * 60), completion: (@Sendable () -> Void)? = nil) {
         let asyncStart = Date()
         
         loadSettings {
@@ -31,11 +31,9 @@ class WordpressSiteManager: ObservableObject {
                 let asyncSettings = Date().timeIntervalSince(asyncStart)
                 self.loadCategories {
                     let asyncCategories = Date().timeIntervalSince(asyncStart)
-                    
                     DispatchQueue.main.async {
-                        self.loadPosts() {
+                        self.loadPosts(queryItems: [.postedBefore(date), .perPage(100)]) {
                             let asyncPosts = Date().timeIntervalSince(asyncStart)
-                            
                             DispatchQueue.main.async {
                                 self.loadPages() {
                                     let asyncPages = Date().timeIntervalSince(asyncStart)
@@ -55,14 +53,14 @@ class WordpressSiteManager: ObservableObject {
         }
     }
     
-    func loadAll(perPage: Int? = nil, maxNumPages: Int? = nil, completion: (@Sendable () -> Void)? = nil) {
+    func loadAll(queryItems: Set<WordpressQueryItem> = [], maxPages: Int? = nil, completion: (@Sendable () -> Void)? = nil) {
         loadSettings {
             DispatchQueue.main.async {
                 self.loadCategories {
                     DispatchQueue.main.async {
-                        self.loadPosts(perPage: perPage, maxNumPages: maxNumPages) {
+                        self.loadPosts(queryItems: queryItems, maxPages: maxPages) {
                             DispatchQueue.main.async {
-                                self.loadPages(perPage: perPage, maxNumPages: maxNumPages) {
+                                self.loadPages(queryItems: queryItems, maxPages: maxPages) {
                                     completion?()
                                 }
                             }
@@ -105,8 +103,14 @@ class WordpressSiteManager: ObservableObject {
     }
     
     // Loads posts with batching
-    func loadPosts(perPage: Int? = nil, maxNumPages: Int? = nil, completion: (@Sendable () -> Void)? = nil) {
-        site.fetchContent(WordpressPost.self, perPage: perPage, maxNumPages: maxNumPages) { result in
+    func loadPosts(queryItems: Set<WordpressQueryItem> = [], maxPages: Int? = nil, completion: (@Sendable () -> Void)? = nil) {
+        
+        var request = WordpressPost.request(queryItems)
+        if let maxPages = maxPages {
+            request.maxPages = maxPages
+        }
+        
+        site.fetch(request) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let posts):
@@ -122,12 +126,17 @@ class WordpressSiteManager: ObservableObject {
     }
     
     // Loads pages with batching
-    func loadPages(perPage: Int? = nil, maxNumPages: Int? = nil, completion: (@Sendable () -> Void)? = nil) {
-        site.fetchContent(WordpressPage.self, perPage: perPage, maxNumPages: maxNumPages) { result in
+    func loadPages(queryItems: Set<WordpressQueryItem> = [], maxPages: Int? = nil, completion: (@Sendable () -> Void)? = nil) {
+        var request = WordpressPage.request(queryItems)
+        if let maxPages = maxPages {
+            request.maxPages = maxPages
+        }
+        
+        site.fetch(request) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let pages):
-                    pages.forEach { self.pages.update(with: $0) }
+                    self.pages = self.pages.union(pages)
                 case .failure(let error):
                     print("Error loadPosts")
                     self.processError(error)

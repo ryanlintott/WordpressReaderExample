@@ -8,52 +8,46 @@
 import SwiftUI
 import WordpressReader
 
-enum WordpressSiteViewTab: String {
-    case posts, site, pages, categories
-}
-
 struct WordpressSiteView: View {
     @StateObject var siteManager = WordpressSiteManager(site: .wordhord)
-    @State private var selection: WordpressSiteViewTab = .posts
-    @State private var loading: Bool = false
+    @State private var isLoading: Bool = false
+    @State private var task: Task<Void, Never>? = nil
+    
+    var tabView: some View {
+        WordpressSiteTabs(
+            posts: siteManager.posts,
+            pages: siteManager.pages,
+            categories: siteManager.categories,
+            settings: siteManager.settings,
+            isLoading: isLoading
+        )
+    }
     
     var body: some View {
-        TabView(selection: $selection) {
-            WordpressItemListView(title: "Posts", items: siteManager.posts.sorted(by: { $0.date_gmt > $1.date_gmt }), loading: loading)
-                .tabItem {
-                    Label("Posts", systemImage: "globe")
+        if #available(iOS 15.0, macOS 12.0, *) {
+            tabView
+                .task {
+                    await loadContent()
                 }
-                .tag(WordpressSiteViewTab.posts)
-            
-            WordpressItemListView(title: "Pages", items: siteManager.pages.sorted(by: { $0.date_gmt > $1.date_gmt }), loading: loading)
-                .tabItem {
-                    Label("Pages", systemImage: "doc.plaintext")
-                }
-                .tag(WordpressSiteViewTab.pages)
-            
-            WordpressItemListView(title: "Categories", items: siteManager.categories, loading: loading)
-                .tabItem {
-                    Label("Categories", systemImage: "tag")
-                }
-                .tag(WordpressSiteViewTab.categories)
-            
-            WordpressSettingsView(settings: siteManager.settings)
-                .tabItem {
-                    Label("Site", systemImage: "gear")
-                }
-                .tag(WordpressSiteViewTab.site)
-        }
-        .onAppear {
-            Task { @MainActor in
-                loading = true
-                await withCheckedContinuation { continuation in
-                    siteManager.loadRecentThenAll {
-                        continuation.resume()
+        } else {
+            tabView
+                .onAppear {
+                    task = Task {
+                        await loadContent()
+                        task = nil
                     }
                 }
-                loading = false
+        }
+    }
+    
+    func loadContent() async {
+        isLoading = true
+        await withCheckedContinuation { continuation in
+            siteManager.loadRecentThenAll {
+                continuation.resume()
             }
         }
+        isLoading = false
     }
 }
 
