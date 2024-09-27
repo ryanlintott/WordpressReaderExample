@@ -24,7 +24,7 @@ struct WordpressSiteView: View {
     }
     
     var body: some View {
-        if #available(iOS 15.0, macOS 12.0, *) {
+        if #available(iOS 15, macOS 12, tvOS 15, *) {
             tabView
                 .task {
                     await loadContent()

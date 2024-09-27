@@ -507,7 +507,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3,7";
 				TVOS_DEPLOYMENT_TARGET = 14.0;
 				XROS_DEPLOYMENT_TARGET = 1.0;
@@ -536,7 +536,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3,7";
 				TVOS_DEPLOYMENT_TARGET = 14.0;
 				XROS_DEPLOYMENT_TARGET = 1.0;
@@ -559,7 +559,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.abetterwaytodo.WordpressReaderExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WordpressReaderExample.app/WordpressReaderExample";
 			};
@@ -581,7 +581,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.abetterwaytodo.WordpressReaderExampleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WordpressReaderExample.app/WordpressReaderExample";
 			};
@@ -601,7 +601,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.abetterwaytodo.WordpressReaderExampleUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = WordpressReaderExample;
 			};
@@ -621,7 +621,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.abetterwaytodo.WordpressReaderExampleUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = WordpressReaderExample;
 			};

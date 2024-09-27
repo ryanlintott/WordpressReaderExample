@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-@MainActor
 struct URLImageView: View {
     let url: String
     
@@ -35,13 +34,13 @@ struct URLImageView: View {
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             
-            #if os(iOS) || os(visionOS)
-            if let uiImage = UIImage(data: data) {
-                image = Image(uiImage: uiImage)
-            }
-            #else
+            #if os(macOS)
             if let nsImage = NSImage(data: data) {
                 image = Image(nsImage: nsImage)
+            }
+            #else
+            if let uiImage = UIImage(data: data) {
+                image = Image(uiImage: uiImage)
             }
             #endif
         } catch {
