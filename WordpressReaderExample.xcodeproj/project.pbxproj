@@ -13,8 +13,6 @@
 		CF9933522654463F00EE2348 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF9933512654463F00EE2348 /* ContentView.swift */; };
 		CF9933542654464000EE2348 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF9933532654464000EE2348 /* Assets.xcassets */; };
 		CF9933572654464000EE2348 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CF9933562654464000EE2348 /* Preview Assets.xcassets */; };
-		CF9933622654464100EE2348 /* WordpressReaderExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF9933612654464100EE2348 /* WordpressReaderExampleTests.swift */; };
-		CF99336D2654464100EE2348 /* WordpressReaderExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF99336C2654464100EE2348 /* WordpressReaderExampleUITests.swift */; };
 		CF99337D2654468B00EE2348 /* WordpressReader in Frameworks */ = {isa = PBXBuildFile; productRef = CF99337C2654468B00EE2348 /* WordpressReader */; };
 		CF99338426544ADB00EE2348 /* WordpressSiteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF99337F26544ADB00EE2348 /* WordpressSiteView.swift */; };
 		CF99338526544ADB00EE2348 /* WordpressSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF99338026544ADB00EE2348 /* WordpressSettingsView.swift */; };
@@ -26,23 +24,6 @@
 		CFF14C3627F39CDA001FF3A6 /* WordpressSiteAsyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFF14C3527F39CDA001FF3A6 /* WordpressSiteAsyncView.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		CF99335E2654464100EE2348 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CF9933442654463F00EE2348 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CF99334B2654463F00EE2348;
-			remoteInfo = WordpressReaderExample;
-		};
-		CF9933692654464100EE2348 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = CF9933442654463F00EE2348 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CF99334B2654463F00EE2348;
-			remoteInfo = WordpressReaderExample;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		CF61BB5126548BDE009936FA /* WordpressItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordpressItemView.swift; sourceTree = "<group>"; };
 		CF61BB5326548FBB009936FA /* WordpressItemListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordpressItemListView.swift; sourceTree = "<group>"; };
@@ -52,12 +33,6 @@
 		CF9933532654464000EE2348 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CF9933562654464000EE2348 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CF9933582654464000EE2348 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CF99335D2654464100EE2348 /* WordpressReaderExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WordpressReaderExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CF9933612654464100EE2348 /* WordpressReaderExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordpressReaderExampleTests.swift; sourceTree = "<group>"; };
-		CF9933632654464100EE2348 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CF9933682654464100EE2348 /* WordpressReaderExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WordpressReaderExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CF99336C2654464100EE2348 /* WordpressReaderExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordpressReaderExampleUITests.swift; sourceTree = "<group>"; };
-		CF99336E2654464100EE2348 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CF99337E2654469900EE2348 /* WordpressReader */ = {isa = PBXFileReference; lastKnownFileType = folder; name = WordpressReader; path = ../WordpressReader; sourceTree = "<group>"; };
 		CF99337F26544ADB00EE2348 /* WordpressSiteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordpressSiteView.swift; sourceTree = "<group>"; };
 		CF99338026544ADB00EE2348 /* WordpressSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordpressSettingsView.swift; sourceTree = "<group>"; };
@@ -78,20 +53,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CF99335A2654464100EE2348 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CF9933652654464100EE2348 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -100,8 +61,6 @@
 			children = (
 				CF99337E2654469900EE2348 /* WordpressReader */,
 				CF99334E2654463F00EE2348 /* WordpressReaderExample */,
-				CF9933602654464100EE2348 /* WordpressReaderExampleTests */,
-				CF99336B2654464100EE2348 /* WordpressReaderExampleUITests */,
 				CF99334D2654463F00EE2348 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -110,8 +69,6 @@
 			isa = PBXGroup;
 			children = (
 				CF99334C2654463F00EE2348 /* WordpressReaderExample.app */,
-				CF99335D2654464100EE2348 /* WordpressReaderExampleTests.xctest */,
-				CF9933682654464100EE2348 /* WordpressReaderExampleUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -136,24 +93,6 @@
 				CF9933562654464000EE2348 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		CF9933602654464100EE2348 /* WordpressReaderExampleTests */ = {
-			isa = PBXGroup;
-			children = (
-				CF9933612654464100EE2348 /* WordpressReaderExampleTests.swift */,
-				CF9933632654464100EE2348 /* Info.plist */,
-			);
-			path = WordpressReaderExampleTests;
-			sourceTree = "<group>";
-		};
-		CF99336B2654464100EE2348 /* WordpressReaderExampleUITests */ = {
-			isa = PBXGroup;
-			children = (
-				CF99336C2654464100EE2348 /* WordpressReaderExampleUITests.swift */,
-				CF99336E2654464100EE2348 /* Info.plist */,
-			);
-			path = WordpressReaderExampleUITests;
 			sourceTree = "<group>";
 		};
 		CF99338926544AE800EE2348 /* Views */ = {
@@ -203,42 +142,6 @@
 			productReference = CF99334C2654463F00EE2348 /* WordpressReaderExample.app */;
 			productType = "com.apple.product-type.application";
 		};
-		CF99335C2654464100EE2348 /* WordpressReaderExampleTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = CF9933742654464100EE2348 /* Build configuration list for PBXNativeTarget "WordpressReaderExampleTests" */;
-			buildPhases = (
-				CF9933592654464100EE2348 /* Sources */,
-				CF99335A2654464100EE2348 /* Frameworks */,
-				CF99335B2654464100EE2348 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				CF99335F2654464100EE2348 /* PBXTargetDependency */,
-			);
-			name = WordpressReaderExampleTests;
-			productName = WordpressReaderExampleTests;
-			productReference = CF99335D2654464100EE2348 /* WordpressReaderExampleTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		CF9933672654464100EE2348 /* WordpressReaderExampleUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = CF9933772654464100EE2348 /* Build configuration list for PBXNativeTarget "WordpressReaderExampleUITests" */;
-			buildPhases = (
-				CF9933642654464100EE2348 /* Sources */,
-				CF9933652654464100EE2348 /* Frameworks */,
-				CF9933662654464100EE2348 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				CF99336A2654464100EE2348 /* PBXTargetDependency */,
-			);
-			name = WordpressReaderExampleUITests;
-			productName = WordpressReaderExampleUITests;
-			productReference = CF9933682654464100EE2348 /* WordpressReaderExampleUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -251,14 +154,6 @@
 				TargetAttributes = {
 					CF99334B2654463F00EE2348 = {
 						CreatedOnToolsVersion = 12.5;
-					};
-					CF99335C2654464100EE2348 = {
-						CreatedOnToolsVersion = 12.5;
-						TestTargetID = CF99334B2654463F00EE2348;
-					};
-					CF9933672654464100EE2348 = {
-						CreatedOnToolsVersion = 12.5;
-						TestTargetID = CF99334B2654463F00EE2348;
 					};
 				};
 			};
@@ -279,8 +174,6 @@
 			projectRoot = "";
 			targets = (
 				CF99334B2654463F00EE2348 /* WordpressReaderExample */,
-				CF99335C2654464100EE2348 /* WordpressReaderExampleTests */,
-				CF9933672654464100EE2348 /* WordpressReaderExampleUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -292,20 +185,6 @@
 			files = (
 				CF9933572654464000EE2348 /* Preview Assets.xcassets in Resources */,
 				CF9933542654464000EE2348 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CF99335B2654464100EE2348 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CF9933662654464100EE2348 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,36 +210,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CF9933592654464100EE2348 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				CF9933622654464100EE2348 /* WordpressReaderExampleTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CF9933642654464100EE2348 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				CF99336D2654464100EE2348 /* WordpressReaderExampleUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		CF99335F2654464100EE2348 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CF99334B2654463F00EE2348 /* WordpressReaderExample */;
-			targetProxy = CF99335E2654464100EE2348 /* PBXContainerItemProxy */;
-		};
-		CF99336A2654464100EE2348 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CF99334B2654463F00EE2348 /* WordpressReaderExample */;
-			targetProxy = CF9933692654464100EE2348 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		CF99336F2654464100EE2348 /* Debug */ = {
@@ -543,90 +393,6 @@
 			};
 			name = Release;
 		};
-		CF9933752654464100EE2348 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 97423JQ8B9;
-				INFOPLIST_FILE = WordpressReaderExampleTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.abetterwaytodo.WordpressReaderExampleTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WordpressReaderExample.app/WordpressReaderExample";
-			};
-			name = Debug;
-		};
-		CF9933762654464100EE2348 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 97423JQ8B9;
-				INFOPLIST_FILE = WordpressReaderExampleTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.abetterwaytodo.WordpressReaderExampleTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WordpressReaderExample.app/WordpressReaderExample";
-			};
-			name = Release;
-		};
-		CF9933782654464100EE2348 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 97423JQ8B9;
-				INFOPLIST_FILE = WordpressReaderExampleUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.abetterwaytodo.WordpressReaderExampleUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = WordpressReaderExample;
-			};
-			name = Debug;
-		};
-		CF9933792654464100EE2348 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 97423JQ8B9;
-				INFOPLIST_FILE = WordpressReaderExampleUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.abetterwaytodo.WordpressReaderExampleUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = WordpressReaderExample;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -644,24 +410,6 @@
 			buildConfigurations = (
 				CF9933722654464100EE2348 /* Debug */,
 				CF9933732654464100EE2348 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		CF9933742654464100EE2348 /* Build configuration list for PBXNativeTarget "WordpressReaderExampleTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				CF9933752654464100EE2348 /* Debug */,
-				CF9933762654464100EE2348 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		CF9933772654464100EE2348 /* Build configuration list for PBXNativeTarget "WordpressReaderExampleUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				CF9933782654464100EE2348 /* Debug */,
-				CF9933792654464100EE2348 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
